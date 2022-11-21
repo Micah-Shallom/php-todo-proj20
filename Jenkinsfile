@@ -30,15 +30,15 @@ pipeline{
         stage('Building application ') {
             steps {
                 script {
-                    sh "sudo docker login -u {docker_username} -p {docker_password}"
-                    sh "sudo docker build -t mshallom/todo-proj20:${env.version} ."
+                    sh " docker login -u {docker_username} -p {docker_password}"
+                    sh " docker build -t mshallom/todo-proj20:${env.version} ."
                 }
             }
         }
         stage('Creating docker container') {
             steps {
                 script {
-                    sh "sudo docker run -d --name todo-app-${env.random_num} -p 8000:8000 mshallom/todo-proj20:${env.version}"
+                    sh " docker run -d --name todo-app-${env.random_num} -p 8000:8000 mshallom/todo-proj20:${env.version}"
                 }
             }
         }
@@ -53,17 +53,17 @@ pipeline{
         stage("Publish to Registry") {
             steps {
                 script {
-                    sh "sudo docker push mshallom/todo-proj20:${env.version}"
-                    // sh "sudo docker login -u {docker_username} -p {docker_password}"
+                    sh " docker push mshallom/todo-proj20:${env.version}"
+                    // sh " docker login -u {docker_username} -p {docker_password}"
                 }
             }
         }
         stage ('Clean Up') {
             steps {
                 script {
-                    sh "sudo docker stop todo-app-${env.random_num}"
-                    sh "sudo docker rm todo-app-${env.random_num}"
-                    sh "sudo docker rmi mshallom/todo-proj20:${env.version}"
+                    sh " docker stop todo-app-${env.random_num}"
+                    sh " docker rm todo-app-${env.random_num}"
+                    sh " docker rmi mshallom/todo-proj20:${env.version}"
                 }
             }
         }
@@ -71,7 +71,7 @@ pipeline{
         stage ('logout Docker') {
             steps {
                 script {
-                    sh "sudo docker logout"
+                    sh " docker logout"
                 }
             }
         }
