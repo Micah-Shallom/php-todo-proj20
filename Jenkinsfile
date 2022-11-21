@@ -45,7 +45,7 @@ pipeline{
             steps {
                 script {
                     sh "sleep 5"
-                    sh "curl -I $(curl ifconfig.me):8000"
+                    sh "curl -I 54.226.249.187:8000"
                 }
             }
         }
