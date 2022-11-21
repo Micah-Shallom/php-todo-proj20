@@ -30,50 +30,50 @@ pipeline{
         stage('Building application ') {
             steps {
                 script {
-                    sh "docker build -t mshallom/todo-proj20:${env.version} ."
+                    sh "sudo docker build -t mshallom/todo-proj20:${env.version} ."
                 }
             }
         }
-        // stage('Creating docker container') {
-        //     steps {
-        //         script {
-        //             sh "docker run -d --name todo-app-${env.random_num} -p 8000:8000 mshallom/todo-proj20:${env.version}"
-        //         }
-        //     }
-        // }
-        // stage("Smoke Test") {
-        //     steps {
-        //         script {
-        //             sh "sleep 5"
-        //             sh "curl -I 54.226.249.187:8000"
-        //         }
-        //     }
-        // }
-        // stage("Publish to Registry") {
-        //     steps {
-        //         script {
-        //             sh "docker login -u {docker_username} -p {docker_password}"
-        //             sh "docker push mshallom/todo-proj20:${env.version}"
-        //         }
-        //     }
-        // }
-        // stage ('Clean Up') {
-        //     steps {
-        //         script {
-        //             sh " docker stop todo-app-${env.random_num}"
-        //             sh "docker rm todo-app-${env.random_num}"
-        //             sh "docker rmi mshallom/todo-proj20:${env.version}"
-        //         }
-        //     }
-        // }
+        stage('Creating docker container') {
+            steps {
+                script {
+                    sh "sudo docker run -d --name todo-app-${env.random_num} -p 8000:8000 mshallom/todo-proj20:${env.version}"
+                }
+            }
+        }
+        stage("Smoke Test") {
+            steps {
+                script {
+                    sh "sleep 5"
+                    sh "curl -I 54.226.249.187:8000"
+                }
+            }
+        }
+        stage("Publish to Registry") {
+            steps {
+                script {
+                    sh "sudo docker login -u {docker_username} -p {docker_password}"
+                    sh "sudo docker push mshallom/todo-proj20:${env.version}"
+                }
+            }
+        }
+        stage ('Clean Up') {
+            steps {
+                script {
+                    sh "sudo docker stop todo-app-${env.random_num}"
+                    sh "sudo docker rm todo-app-${env.random_num}"
+                    sh "sudo docker rmi mshallom/todo-proj20:${env.version}"
+                }
+            }
+        }
 
-        // stage ('logout Docker') {
-        //     steps {
-        //         script {
-        //             sh "docker logout"
-        //         }
-        //     }
-        // }
+        stage ('logout Docker') {
+            steps {
+                script {
+                    sh "sudo docker logout"
+                }
+            }
+        }
     }
    
 }
