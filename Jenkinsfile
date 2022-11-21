@@ -2,8 +2,7 @@ pipeline{
     agent any
 
     environment {
-        COMMIT_HASH = sh(returnStdout: true, script: 'git rev-parse --short=4 HEAD').trim()
-        TAG = "${env.GIT_BRANCH}.${env.COMMIT_HASH}.${env.BUILD_NUMBER}".drop(15)
+        TAG = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
         max = 20
         random_num = "${Math.abs(new Random().nextInt(max+1))}"
         docker_password = credentials('dockerhub_password')
@@ -42,7 +41,7 @@ pipeline{
         stage("Smoke Test") {
             steps {
                 script {
-                    sh "sleep 5"
+                    sh "sleep 10"
                     sh "curl -I 54.167.99.240:8000"
                 }
             }
