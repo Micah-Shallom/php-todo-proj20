@@ -9,7 +9,7 @@ pipeline{
         VERSION = "${env.TAG}"
         max = 50
         random_num = "${Math.abs(new Random().nextInt(max+1))}"
-        docker_password = credentials('docker_credentials')
+        docker_password = credentials('dockerhub_password')
     }
 
     stages{
