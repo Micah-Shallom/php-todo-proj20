@@ -30,7 +30,8 @@ pipeline{
         stage('Building application ') {
             steps {
                 script {
-                    sh " docker login -u {docker_username} -p {docker_password}"
+                    
+                    sh " docker login -u ${docker_username} -p ${docker_password}"
                     sh " docker build -t mshallom/todo-proj20:${env.version} ."
                 }
             }
