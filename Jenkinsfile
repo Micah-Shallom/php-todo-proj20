@@ -3,11 +3,8 @@ pipeline{
 
     environment {
         COMMIT_HASH = sh(returnStdout: true, script: 'git rev-parse --short=4 HEAD').trim()
-        BRANCH = "${env.GIT_BRANCH}"
-        TAG = "${env.BRANCH}.${env.COMMIT_HASH}.${env.BUILD_NUMBER}".drop(15)
-        DEV_TAG = "${env.BRANCH}.${env.COMMIT_HASH}.${env.BUILD_NUMBER}".drop(7)
-        VERSION = "${env.TAG}"
-        max = 50
+        TAG = "${env.GIT_BRANCH}.${env.COMMIT_HASH}.${env.BUILD_NUMBER}".drop(15)
+        max = 20
         random_num = "${Math.abs(new Random().nextInt(max+1))}"
         docker_password = credentials('dockerhub_password')
     }
@@ -31,14 +28,14 @@ pipeline{
                 script {
                     
                     sh " docker login -u mshallom -p ${docker_password}"
-                    sh " docker build -t mshallom/todo-proj20:${env.VERSION} ."
+                    sh " docker build -t mshallom/todo-proj20:${env.TAG} ."
                 }
             }
         }
         stage('Creating docker container') {
             steps {
                 script {
-                    sh " docker run -d --name todo-app-${env.random_num} -p 8000:8000 mshallom/todo-proj20:${env.VERSION}"
+                    sh " docker run -d --name todo-app-${env.random_num} -p 8000:8000 mshallom/todo-proj20:${env.TAG}"
                 }
             }
         }
@@ -53,7 +50,7 @@ pipeline{
         stage("Publish to Registry") {
             steps {
                 script {
-                    sh " docker push mshallom/todo-proj20:${env.VERSION}"
+                    sh " docker push mshallom/todo-proj20:${env.TAG}"
                     // sh " docker login -u {docker_username} -p {docker_password}"
                 }
             }
@@ -63,7 +60,7 @@ pipeline{
                 script {
                     sh " docker stop todo-app-${env.random_num}"
                     sh " docker rm todo-app-${env.random_num}"
-                    sh " docker rmi mshallom/todo-proj20:${env.VERSION}"
+                    sh " docker rmi mshallom/todo-proj20:${env.TAG}"
                 }
             }
         }
