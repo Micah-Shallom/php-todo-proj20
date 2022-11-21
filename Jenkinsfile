@@ -30,6 +30,7 @@ pipeline{
         stage('Building application ') {
             steps {
                 script {
+                    sh "sudo docker login -u {docker_username} -p {docker_password}"
                     sh "sudo docker build -t mshallom/todo-proj20:${env.version} ."
                 }
             }
@@ -52,8 +53,8 @@ pipeline{
         stage("Publish to Registry") {
             steps {
                 script {
-                    sh "sudo docker login -u {docker_username} -p {docker_password}"
                     sh "sudo docker push mshallom/todo-proj20:${env.version}"
+                    // sh "sudo docker login -u {docker_username} -p {docker_password}"
                 }
             }
         }
