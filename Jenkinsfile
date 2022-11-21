@@ -22,6 +22,7 @@ pipeline{
                 git branch: 'main', credentialsId: '1f538342-affb-4763-b4dd-70aa119ae380', url: 'https://github.com/Micah-Shallom/php-todo-proj20.git'
             }
         }
+
         stage('Building application ') {
             steps {
                 script {
@@ -31,6 +32,7 @@ pipeline{
                 }
             }
         }
+
         stage('Creating docker container') {
             steps {
                 script {
@@ -38,22 +40,24 @@ pipeline{
                 }
             }
         }
+
         stage("Smoke Test") {
             steps {
                 script {
-                    sh "sleep 10"
+                    sh "sleep 60"
                     sh "curl -I 54.167.99.240:8000"
                 }
             }
         }
+
         stage("Publish to Registry") {
             steps {
                 script {
                     sh " docker push mshallom/todo-proj20:${env.TAG}"
-                    // sh " docker login -u {docker_username} -p {docker_password}"
                 }
             }
         }
+
         stage ('Clean Up') {
             steps {
                 script {
