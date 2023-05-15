@@ -5,7 +5,7 @@ pipeline{
         TAG = "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
         max = 20
         random_num = "${Math.abs(new Random().nextInt(max+1))}"
-        docker_password = credentials('dockerhub_password')
+//         docker_password = credentials('dockerhub_password')
     }
 
     stages{
@@ -27,7 +27,7 @@ pipeline{
             steps {
                 script {
                     
-                    sh " docker login -u mshallom -p ${docker_password}"
+                    sh " docker login -u mshallom -p ${env.password}"
                     sh " docker build -t mshallom/todo-proj20:${env.TAG} ."
                 }
             }
