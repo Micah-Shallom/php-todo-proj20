@@ -27,7 +27,7 @@ pipeline{
             steps {
                 script {
                     
-                    sh " docker login -u mshallom -p ${env.password}"
+                    sh " docker login -u mshallom -p ${env.PASSWORD}"
                     sh " docker build -t mshallom/todo-proj20:${env.TAG} ."
                 }
             }
